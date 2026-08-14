@@ -1,50 +1,57 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: [TEMPLATE] -> 1.0.0
+- List of modified principles:
+  * PRINCIPLE_1: "I. Foco em Acolhimento e Linguagem Acessível (Mães e Familiares)"
+  * PRINCIPLE_2: "II. Mobile-First e Experiência Tátil Fluida"
+  * PRINCIPLE_3: "III. Navegação Estilo Folheto/Livro (Page Flip Gratuito)"
+  * PRINCIPLE_4: "IV. Arquitetura Estática para GitHub Pages (Zero Backend)"
+  * PRINCIPLE_5: "V. Modularidade e Auto-Ajuste no Gerenciamento de Páginas"
+- Added sections:
+  * "Restrições Técnicas e Diretrizes de Conteúdo"
+  * "Fluxo de Desenvolvimento e Garantia de Qualidade"
+- Removed sections: Nenhuma (substituídos placeholders do template)
+- Follow-up TODOs: Nenhuma pendência
+-->
+
+# Guia UTI Neonatal - Mackenzie UEMS Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Foco em Acolhimento e Linguagem Acessível (Mães e Familiares)
+O projeto é destinado exclusivamente a mães, pais e familiares de recém-nascidos internados na UTI Neonatal, e NÃO a profissionais de saúde. Toda a interface, navegação e apresentação de conteúdo DEVEM priorizar acolhimento, clareza, empatia e facilidade de leitura para pessoas leigas, reduzindo o estresse e a sobrecarga cognitiva no ambiente hospitalar.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Mobile-First e Experiência Tátil Fluida
+O uso principal ocorre em smartphones durante a permanência no hospital. Toda a interface DEVE ser projetada primariamente para telas pequenas (360px a 430px) e adaptável a tablets/desktop. A navegação DEVE responder de forma suave e instantânea a toques, gestos de arrastar (*swipe/drag*) e toques rápidos.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Navegação Estilo Folheto/Livro (Page Flip Gratuito)
+A experiência de leitura DEVE simular a folheação natural de um livreto físico através de um componente de virada de página (*Page Flip*). O uso do componente (como o inspirado em `reactbits` / `page-flip` ou equivalente open-source) DEVE ser 100% gratuito e com licença aberta permissiva (ex: MIT, Apache-2.0). Nenhuma dependência comercial, proprietária ou paga é permitida.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Arquitetura Estática para GitHub Pages (Zero Backend)
+A aplicação DEVE ser compilada em uma distribuição puramente estática (HTML, CSS e JavaScript client-side). Não é permitido o uso de servidores dinâmicos, rotas server-side ou bancos de dados em tempo de execução. O artefato final DEVE ser executável diretamente no GitHub Pages a partir de um ponto de entrada único (`index.html`) e assets associados.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Modularidade e Auto-Ajuste no Gerenciamento de Páginas
+O acervo de páginas do guia reside na pasta `docs/paginas/` em formato otimizado WebP (`pagina-01.webp` a `pagina-33.webp`). O sistema DEVE ser arquitetado de forma desacoplada para que futuras inclusões, exclusões ou reordenações de páginas exijam apenas a alteração dos arquivos ou de uma lista de configuração de páginas, refletindo automaticamente na paginação e no sumário sem necessidade de reescrever componentes do leitor.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Restrições Técnicas e Diretrizes de Conteúdo
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- **Otimização de Mídia**: Todas as páginas originais já estão em WebP em `docs/paginas/`. O leitor deve realizar pré-carregamento (*lazy-loading* / *pre-fetching*) inteligente das páginas adjacentes (anterior e próxima) para garantir viradas de página fluidas mesmo em redes móveis 4G/3G de hospitais.
+- **Licenciamento Estrito**: Toda e qualquer biblioteca ou recurso adicionado ao projeto deve possuir licença livre/open-source comprovada.
+- **Acessibilidade e Fallbacks**: Além do gesto de virar a página (flip), a interface DEVE prover controles acessíveis complementares (botões de anterior/próxima, indicador claro do número da página atual/total e navegação por teclado).
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Fluxo de Desenvolvimento e Garantia de Qualidade
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- **Validação de Build**: Toda alteração de código DEVE ser validada através de um build estático local sem erros de empacotamento antes de ser submetida.
+- **Conformidade com a Especificação (SDD)**: Nenhuma implementação de interface ou funcionalidade deve ser iniciada sem o ciclo prévio de especificação (`speckit-specify`), plano técnico (`speckit-plan`) e decomposição em tarefas (`speckit-tasks`).
+- **Testes de Usabilidade Mobile**: Toda nova funcionalidade deve ser inspecionada visual e funcionalmente em emulação mobile e em múltiplos tamanhos de tela.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+A presente Constituição é o documento de maior hierarquia normativa do repositório *Guia UTI Neonatal - Mackenzie UEMS*. Todas as especificações técnicas, planos de arquitetura, tarefas e revisões de código DEVEM obedecer estritamente a estes princípios.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+Emendas a este documento requerem justificativa documentada e incremento de versão semântica:
+- **MAJOR (X.0.0)**: Alteração ou remoção de princípios fundamentais ou quebra de compatibilidade de arquitetura.
+- **MINOR (1.X.0)**: Adição de novos princípios, regras de qualidade ou restrições técnicas.
+- **PATCH (1.0.X)**: Correções de redação, formatação ou esclarecimentos textuais.
+
+**Version**: 1.0.0 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-13
