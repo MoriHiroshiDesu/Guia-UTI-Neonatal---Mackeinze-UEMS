@@ -20,6 +20,7 @@
   overflow: visible;
   transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
+  transform-origin: center center;
 }
 
 /* Páginas individuais no PageFlip com profundidade e sombra realista */
@@ -38,12 +39,13 @@
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
+  overflow: hidden;
 }
 
 .page-image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: fill;
   display: block;
   pointer-events: none;
   background-color: #ffffff;

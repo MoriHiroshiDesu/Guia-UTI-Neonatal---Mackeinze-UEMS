@@ -126,3 +126,24 @@
     display: none;
   }
 }
+
+@media (max-height: 550px) {
+  .app-header {
+    height: var(--header-height);
+    padding: 2px 0;
+  }
+
+  .header-brand {
+    padding: 3px 10px;
+  }
+
+  .header-download-btn {
+    height: 32px;
+    padding: 0 10px;
+  }
+
+  .zoom-tool-btn {
+    width: 28px;
+    height: 28px;
+  }
+}

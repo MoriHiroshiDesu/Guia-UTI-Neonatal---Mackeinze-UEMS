@@ -34,8 +34,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build static site
-        run: npm run build
+      - name: Clean and build static site
+        run: |
+          rm -rf dist
+          npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
