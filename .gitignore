@@ -24,3 +24,12 @@ tmp/
 temp/
 __pycache__/
 *.py[cod]
+
+# Node / Web Build
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env*
+!.env.example
+

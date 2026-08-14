@@ -1,0 +1,97 @@
+.reader-controls {
+  height: var(--controls-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--color-surface);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border-subtle);
+  margin-bottom: 8px;
+  z-index: 10;
+}
+
+/* Botões de Navegação com alvo de toque adequado para mobile (>= 44px) */
+.control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-brand-light);
+  color: var(--color-brand-primary);
+  flex-shrink: 0;
+  transition: transform 0.15s ease, background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.control-btn:hover:not(:disabled) {
+  background-color: #b2f5ea;
+  transform: scale(1.05);
+}
+
+.control-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.control-btn:disabled {
+  background-color: #f1f5f9;
+  color: #cbd5e1;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Indicador de Páginas */
+.page-indicator-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.page-indicator-text {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.page-current {
+  color: var(--color-brand-primary);
+  font-weight: 700;
+}
+
+.page-divider {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.page-total {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+}
+
+/* Barra de Progresso */
+.progress-bar-track {
+  width: 100%;
+  max-width: 140px;
+  height: 4px;
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-brand-primary), #14b8a6);
+  border-radius: var(--radius-full);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

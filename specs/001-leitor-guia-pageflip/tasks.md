@@ -8,9 +8,9 @@
 
 **Purpose**: Inicialização do projeto, dependências abertas/gratuitas e infraestrutura de build Vite.
 
-- [ ] T001 Inicializar configuração do Vite com React, `page-flip` (licença MIT) e dependências em `package.json` e `vite.config.js`
-- [ ] T002 [P] Configurar ponto de entrada HTML com viewport mobile-first e metadados de acolhimento em `index.html`
-- [ ] T003 [P] Configurar tokens de design CSS, layout responsivo mobile e tipografia limpa em `src/styles/index.css`
+- [x] T001 Inicializar configuração do Vite com React, `page-flip` (licença MIT) e dependências em `package.json` e `vite.config.js`
+- [x] T002 [P] Configurar ponto de entrada HTML com viewport mobile-first e metadados de acolhimento em `index.html`
+- [x] T003 [P] Configurar tokens de design CSS, layout responsivo mobile e tipografia limpa em `src/styles/index.css`
 
 ---
 
@@ -20,9 +20,9 @@
 
 **⚠️ CRITICAL**: Nenhuma história de usuário pode ser finalizada sem a conclusão desta fase.
 
-- [ ] T004 Implementar o serviço dinâmico de carregamento e ordenação de páginas WebP em `src/services/pageService.js`
-- [ ] T005 [P] Definir tipos e estruturas de dados do leitor (`PageItem`, `ReaderState`) em `src/types/reader.js`
-- [ ] T006 [P] Implementar componente de cabeçalho acolhedor (Header) em `src/components/Header.jsx`
+- [x] T004 Implementar o serviço dinâmico de carregamento e ordenação de páginas WebP em `src/services/pageService.js`
+- [x] T005 [P] Definir tipos e estruturas de dados do leitor (`PageItem`, `ReaderState`) em `src/types/reader.js`
+- [x] T006 [P] Implementar componente de cabeçalho acolhedor (Header) em `src/components/Header.jsx`
 
 **Checkpoint**: Fundação pronta — os componentes do leitor e histórias de usuário podem ser integrados.
 
@@ -36,9 +36,9 @@
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] Implementar componente de livro interativo integrando `page-flip` com suporte a toque/arraste em `src/components/FlipBook.jsx`
-- [ ] T008 [US1] Integrar o carregamento das páginas do `pageService` com o `FlipBook` no componente raiz em `src/App.jsx`
-- [ ] T009 [US1] Ajustar estilos e proporções responsivas (*aspect-ratio* vertical) do folheto em `src/styles/flipbook.css`
+- [x] T007 [US1] Implementar componente de livro interativo integrando `page-flip` com suporte a toque/arraste em `src/components/FlipBook.jsx`
+- [x] T008 [US1] Integrar o carregamento das páginas do `pageService` com o `FlipBook` no componente raiz em `src/App.jsx`
+- [x] T009 [US1] Ajustar estilos e proporções responsivas (*aspect-ratio* vertical) do folheto em `src/styles/flipbook.css`
 
 **Checkpoint**: MVP funcional! A folheação das 33 páginas via Page Flip funciona independentemente no celular.
 
@@ -52,9 +52,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T010 [P] [US2] Criar barra de controles acessíveis com botões de navegação e indicador de página atual/total em `src/components/Controls.jsx`
-- [ ] T011 [US2] Conectar eventos da barra de controles e atalhos de teclado (setas) ao estado do `FlipBook` em `src/App.jsx`
-- [ ] T012 [US2] Estilizar barra de controles com áreas de toque acessíveis (mínimo 44px) e estados ativo/desabilitado em `src/styles/controls.css`
+- [x] T010 [P] [US2] Criar barra de controles acessíveis com botões de navegação e indicador de página atual/total em `src/components/Controls.jsx`
+- [x] T011 [US2] Conectar eventos da barra de controles e atalhos de teclado (setas) ao estado do `FlipBook` em `src/App.jsx`
+- [x] T012 [US2] Estilizar barra de controles com áreas de toque acessíveis (mínimo 44px) e estados ativo/desabilitado em `src/styles/controls.css`
 
 **Checkpoint**: Histórias 1 e 2 funcionam de forma integrada e acessível.
 
@@ -68,9 +68,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T013 [P] [US3] Implementar pré-carregamento automático em memória das páginas adjacentes (N-1 e N+1) em `src/services/pageService.js`
-- [ ] T014 [US3] Configurar script de build e cópia estática das páginas de `docs/paginas` para o diretório de distribuição em `vite.config.js`
-- [ ] T015 [US3] Configurar script de deploy para o GitHub Pages em `package.json`
+- [x] T013 [P] [US3] Implementar pré-carregamento automático em memória das páginas adjacentes (N-1 e N+1) em `src/services/pageService.js`
+- [x] T014 [US3] Configurar script de build e cópia estática das páginas de `docs/paginas` para o diretório de distribuição em `vite.config.js`
+- [x] T015 [US3] Configurar script de deploy para o GitHub Pages em `package.json`
 
 **Checkpoint**: Leitor otimizado com auto-ajuste e pronto para publicação no GitHub Pages.
 
@@ -80,9 +80,9 @@
 
 **Purpose**: Refinamentos visuais, feedback de carregamento e validação final contra os critérios de aceitação.
 
-- [ ] T016 [P] Implementar indicador discreto de carregamento (*LoadingIndicator*) em `src/components/LoadingIndicator.jsx`
-- [ ] T017 Executar roteiro de validação manual ponta a ponta descrito em `specs/001-leitor-guia-pageflip/quickstart.md`
-- [ ] T018 Executar validação de build de produção estático (`npm run build`) e verificação do pacote `dist/`
+- [x] T016 [P] Implementar indicador discreto de carregamento (*LoadingIndicator*) em `src/components/LoadingIndicator.jsx`
+- [x] T017 Executar roteiro de validação manual ponta a ponta descrito em `specs/001-leitor-guia-pageflip/quickstart.md`
+- [x] T018 Executar validação de build de produção estático (`npm run build`) e verificação do pacote `dist/`
 
 ---
 
