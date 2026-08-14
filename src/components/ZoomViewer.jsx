@@ -169,9 +169,9 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
     <div
       className="zoom-container"
       ref={containerRef}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      onTouchStartCapture={handleTouchStart}
+      onTouchMoveCapture={handleTouchMove}
+      onTouchEndCapture={handleTouchEnd}
     >
       <div
         className="zoom-content"
@@ -191,7 +191,12 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
       {isZoomActive && (
         <div
           className="zoom-floating-badge"
-          onClick={resetZoom}
+          onClick={(e) => {
+            e.stopPropagation();
+            resetZoom();
+          }}
+          onTouchStart={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
           role="button"
           tabIndex={0}
           aria-label="Redefinir zoom para tamanho original"
