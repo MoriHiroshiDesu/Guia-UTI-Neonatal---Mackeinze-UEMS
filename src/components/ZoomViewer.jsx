@@ -169,12 +169,12 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
     <div
       className="zoom-container"
       ref={containerRef}
-      onTouchStartCapture={handleTouchStart}
-      onTouchMoveCapture={handleTouchMove}
-      onTouchEndCapture={handleTouchEnd}
     >
       <div
         className="zoom-content"
+        onTouchStartCapture={handleTouchStart}
+        onTouchMoveCapture={handleTouchMove}
+        onTouchEndCapture={handleTouchEnd}
         style={{
           transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${scale})`,
           transformOrigin: 'center center',
@@ -196,6 +196,11 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
             resetZoom();
           }}
           onTouchStart={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            resetZoom();
+          }}
           onPointerDown={(e) => e.stopPropagation()}
           role="button"
           tabIndex={0}
