@@ -3,7 +3,15 @@ import { PageFlip } from 'page-flip';
 import '../styles/flipbook.css';
 
 export const FlipBook = forwardRef(function FlipBook(
-  { pages, initialPage = 1, onPageChange, onFlipStart, onInit, isZoomActive = false },
+  {
+    pages,
+    initialPage = 1,
+    onPageChange,
+    onFlipStart,
+    onInit,
+    isZoomActive = false,
+    isPinching = false,
+  },
   ref
 ) {
   const containerRef = useRef(null);
@@ -35,12 +43,12 @@ export const FlipBook = forwardRef(function FlipBook(
     },
   }));
 
-  // Desativa gestos de folheação durante o modo de zoom para permitir panning livre
+  // Desativa gestos de folheação durante zoom ou pinça multitouch
   useEffect(() => {
     if (mountElRef.current) {
-      mountElRef.current.style.pointerEvents = isZoomActive ? 'none' : 'auto';
+      mountElRef.current.style.pointerEvents = isZoomActive || isPinching ? 'none' : 'auto';
     }
-  }, [isZoomActive]);
+  }, [isZoomActive, isPinching]);
 
   useEffect(() => {
     if (!containerRef.current || !pages || pages.length === 0) return;
@@ -67,7 +75,6 @@ export const FlipBook = forwardRef(function FlipBook(
       img.src = page.src;
       img.alt = `Guia UTI Neonatal - ${page.title}`;
       img.className = 'page-image';
-      // Prioriza carregamento das páginas próximas da página inicial
       img.loading = Math.abs(idx + 1 - initialPage) <= 3 ? 'eager' : 'lazy';
       img.draggable = false;
 
@@ -84,20 +91,44 @@ export const FlipBook = forwardRef(function FlipBook(
     const containerWidth = containerRef.current.clientWidth || 360;
     const containerHeight = containerRef.current.clientHeight || 560;
 
-    // Proporção exata das imagens do guia (874 x 1241 = ~0.70427)
-    const targetRatio = 874 / 1241;
-    let baseWidth = containerWidth;
-    let baseHeight = baseWidth / targetRatio;
+    // Proporção de página única (874 x 1241 = ~0.70427)
+    const singleRatio = 874 / 1241;
+    // Tela larga (Desktop / Widescreen >= 700px)
+    const isDesktop = containerWidth >= 700;
 
-    if (baseHeight > containerHeight) {
-      baseHeight = containerHeight;
-      baseWidth = baseHeight * targetRatio;
+    let baseWidth, baseHeight;
+
+    if (isDesktop) {
+      // Proporção de livro aberto duplo: (2 * 874) / 1241 = ~1.40854
+      const doubleRatio = (2 * 874) / 1241;
+      let bookWidth = containerWidth;
+      let bookHeight = bookWidth / doubleRatio;
+
+      if (bookHeight > containerHeight) {
+        bookHeight = containerHeight;
+        bookWidth = bookHeight * doubleRatio;
+      }
+
+      // Largura de cada folha no PageFlip = metade da largura do livro aberto
+      baseWidth = Math.round(bookWidth / 2);
+      baseHeight = Math.round(bookHeight);
+    } else {
+      // Modo Mobile retrato (folha única)
+      baseWidth = containerWidth;
+      baseHeight = baseWidth / singleRatio;
+
+      if (baseHeight > containerHeight) {
+        baseHeight = containerHeight;
+        baseWidth = baseHeight * singleRatio;
+      }
+      baseWidth = Math.round(baseWidth);
+      baseHeight = Math.round(baseHeight);
     }
 
     try {
       const pageFlip = new PageFlip(mountEl, {
-        width: Math.round(baseWidth),
-        height: Math.round(baseHeight),
+        width: baseWidth,
+        height: baseHeight,
         size: 'stretch',
         minWidth: 260,
         maxWidth: 900,
@@ -106,7 +137,7 @@ export const FlipBook = forwardRef(function FlipBook(
         maxShadowOpacity: 0.35,
         showCover: true,
         mobileScrollSupport: false,
-        usePortrait: true,
+        usePortrait: !isDesktop, // No desktop ativa abertura dupla de livro
         startPage: Math.max(0, Math.min(pages.length - 1, initialPage - 1)),
         drawShadow: true,
         flippingTime: 550,

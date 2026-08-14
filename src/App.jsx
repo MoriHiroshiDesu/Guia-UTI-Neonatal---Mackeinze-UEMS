@@ -14,6 +14,7 @@ export function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [zoomScale, setZoomScale] = useState(1);
   const [isZoomActive, setIsZoomActive] = useState(false);
+  const [isPinching, setIsPinching] = useState(false);
 
   const flipBookRef = useRef(null);
   const zoomRef = useRef(null);
@@ -83,6 +84,17 @@ export function App() {
     }
   }, [isZoomActive]);
 
+  // Salto direto disparado pelo Scrubber Slider
+  const handlePageSelect = useCallback((targetPage) => {
+    if (zoomRef.current && isZoomActive) {
+      zoomRef.current.resetZoom();
+    }
+    if (flipBookRef.current) {
+      flipBookRef.current.goToPage(targetPage);
+    }
+    setCurrentPage(targetPage);
+  }, [isZoomActive]);
+
   // Controles de zoom disparados pelo Header
   const handleZoomIn = useCallback(() => {
     if (zoomRef.current) {
@@ -142,6 +154,7 @@ export function App() {
             ref={zoomRef}
             onZoomChange={setZoomScale}
             onActiveStateChange={setIsZoomActive}
+            onPinchStateChange={setIsPinching}
           >
             <FlipBook
               ref={flipBookRef}
@@ -149,18 +162,19 @@ export function App() {
               initialPage={currentPage}
               onPageChange={handlePageChange}
               isZoomActive={isZoomActive}
+              isPinching={isPinching}
             />
           </ZoomViewer>
         )}
       </main>
 
-      {/* Barra de Controles Acessíveis */}
+      {/* Barra de Controles Acessíveis com Scrubber Slider */}
       <Controls
         currentPage={currentPage}
         totalPages={totalPages}
         onPrev={handlePrev}
         onNext={handleNext}
-        onFirstPage={handleFirstPage}
+        onPageSelect={handlePageSelect}
       />
     </div>
   );

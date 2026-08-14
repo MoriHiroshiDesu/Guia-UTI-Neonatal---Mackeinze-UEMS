@@ -3,7 +3,7 @@ import { RotateCcw } from 'lucide-react';
 import '../styles/zoom.css';
 
 export const ZoomViewer = forwardRef(function ZoomViewer(
-  { children, onZoomChange, onActiveStateChange },
+  { children, onZoomChange, onActiveStateChange, onPinchStateChange },
   ref
 ) {
   const containerRef = useRef(null);
@@ -17,7 +17,9 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
     initialScale: 1,
     lastTouch: { x: 0, y: 0 },
     isDragging: false,
+    isPinching: false,
     lastTapTime: 0,
+    pinchReleaseTimeout: null,
   });
 
   const getDistance = (t1, t2) => {
@@ -75,8 +77,18 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
 
   // Gestos de toque: Pinch (2 dedos), Pan (1 dedo com zoom ativo) e Double-tap
   const handleTouchStart = (e) => {
-    if (e.touches.length === 2) {
-      // Inicia gesto de pinça
+    if (touchState.current.pinchReleaseTimeout) {
+      clearTimeout(touchState.current.pinchReleaseTimeout);
+      touchState.current.pinchReleaseTimeout = null;
+    }
+
+    if (e.touches.length >= 2) {
+      // Bloqueio rigoroso de propagação para não afetar o PageFlip
+      e.preventDefault();
+      e.stopPropagation();
+      touchState.current.isPinching = true;
+      onPinchStateChange?.(true);
+
       const dist = getDistance(e.touches[0], e.touches[1]);
       touchState.current.initialDistance = dist;
       touchState.current.initialScale = scale;
@@ -100,6 +112,8 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
 
       // Se já estiver com zoom, inicia pan de arrasto
       if (scale > 1.05) {
+        e.preventDefault();
+        e.stopPropagation();
         touchState.current.isDragging = true;
         touchState.current.lastTouch = { x: touch.clientX, y: touch.clientY };
       }
@@ -107,9 +121,10 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
   };
 
   const handleTouchMove = (e) => {
-    if (e.touches.length === 2) {
+    if (e.touches.length >= 2) {
       // Gesto de pinça contínuo
       e.preventDefault();
+      e.stopPropagation();
       const dist = getDistance(e.touches[0], e.touches[1]);
       if (touchState.current.initialDistance > 0) {
         const factor = dist / touchState.current.initialDistance;
@@ -119,6 +134,7 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
     } else if (e.touches.length === 1 && touchState.current.isDragging && scale > 1.05) {
       // Arrastar (pan) na página ampliada
       e.preventDefault();
+      e.stopPropagation();
       const touch = e.touches[0];
       const deltaX = touch.clientX - touchState.current.lastTouch.x;
       const deltaY = touch.clientY - touchState.current.lastTouch.y;
@@ -141,6 +157,11 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
       if (scale < 1.05) {
         resetZoom();
       }
+      // Cooldown de 150ms para evitar falsos swipes ao soltar a pinça
+      touchState.current.pinchReleaseTimeout = setTimeout(() => {
+        touchState.current.isPinching = false;
+        onPinchStateChange?.(false);
+      }, 150);
     }
   };
 
