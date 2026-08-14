@@ -121,7 +121,7 @@ export const FlipBook = forwardRef(function FlipBook(
     updateMountPosition(currentPage);
   }, [currentPage, updateMountPosition]);
 
-  // Interceptador em fase de captura para blindagem total de eventos de toque (Pinch vs Swipe)
+  // Interceptador em fase de captura para blindagem total de eventos (Mouse + Touch) durante Zoom
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -150,16 +150,40 @@ export const FlipBook = forwardRef(function FlipBook(
       }
     };
 
+    const handleCaptureMouse = (e) => {
+      if (isZoomActive) {
+        // Bloqueia qualquer clique ou arraste de mouse para o PageFlip enquanto o zoom estiver ativo
+        e.stopPropagation();
+      }
+    };
+
     container.addEventListener('touchstart', handleCaptureTouch, { capture: true, passive: false });
     container.addEventListener('touchmove', handleCaptureTouch, { capture: true, passive: false });
     container.addEventListener('touchend', handleCaptureTouch, { capture: true, passive: false });
     container.addEventListener('touchcancel', handleCaptureTouch, { capture: true, passive: false });
+
+    container.addEventListener('mousedown', handleCaptureMouse, { capture: true });
+    container.addEventListener('mousemove', handleCaptureMouse, { capture: true });
+    container.addEventListener('mouseup', handleCaptureMouse, { capture: true });
+    container.addEventListener('click', handleCaptureMouse, { capture: true });
+    container.addEventListener('pointerdown', handleCaptureMouse, { capture: true });
+    container.addEventListener('pointermove', handleCaptureMouse, { capture: true });
+    container.addEventListener('pointerup', handleCaptureMouse, { capture: true });
 
     return () => {
       container.removeEventListener('touchstart', handleCaptureTouch, { capture: true });
       container.removeEventListener('touchmove', handleCaptureTouch, { capture: true });
       container.removeEventListener('touchend', handleCaptureTouch, { capture: true });
       container.removeEventListener('touchcancel', handleCaptureTouch, { capture: true });
+
+      container.removeEventListener('mousedown', handleCaptureMouse, { capture: true });
+      container.removeEventListener('mousemove', handleCaptureMouse, { capture: true });
+      container.removeEventListener('mouseup', handleCaptureMouse, { capture: true });
+      container.removeEventListener('click', handleCaptureMouse, { capture: true });
+      container.removeEventListener('pointerdown', handleCaptureMouse, { capture: true });
+      container.removeEventListener('pointermove', handleCaptureMouse, { capture: true });
+      container.removeEventListener('pointerup', handleCaptureMouse, { capture: true });
+
       if (cooldownTimer) clearTimeout(cooldownTimer);
     };
   }, [isZoomActive, isPinching]);

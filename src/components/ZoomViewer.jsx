@@ -10,6 +10,7 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isZoomActive, setIsZoomActive] = useState(false);
+  const [isDraggingVisual, setIsDraggingVisual] = useState(false);
 
   // Rastreamento de toques para Pinch, Pan e Double-Tap
   const touchState = useRef({
@@ -20,6 +21,13 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
     isPinching: false,
     lastTapTime: 0,
     pinchReleaseTimeout: null,
+  });
+
+  // Rastreamento de mouse para Pan e Double-Click no desktop
+  const mouseState = useRef({
+    isDragging: false,
+    lastPos: { x: 0, y: 0 },
+    movedDistance: 0,
   });
 
   const getDistance = (t1, t2) => {
@@ -44,6 +52,8 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
     setScale(1);
     setPosition({ x: 0, y: 0 });
     setIsZoomActive(false);
+    setIsDraggingVisual(false);
+    mouseState.current.isDragging = false;
     onActiveStateChange?.(false);
     onZoomChange?.(1);
   }, [onActiveStateChange, onZoomChange]);
@@ -60,6 +70,8 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
 
       if (!active) {
         setPosition({ x: 0, y: 0 });
+        setIsDraggingVisual(false);
+        mouseState.current.isDragging = false;
       } else {
         setPosition((prev) => clampPosition(prev, clampedScale));
       }
@@ -75,7 +87,69 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
     getScale: () => scale,
   }));
 
-  // Gestos de toque: Pinch (2 dedos), Pan (1 dedo com zoom ativo) e Double-tap
+  // ==================== MANIPULADORES DE MOUSE (DESKTOP) ====================
+  const handleMouseDown = (e) => {
+    if (e.button !== 0) return; // Apenas botão principal (esquerdo)
+
+    if (scale > 1.05) {
+      e.preventDefault();
+      e.stopPropagation();
+      mouseState.current.isDragging = true;
+      mouseState.current.lastPos = { x: e.clientX, y: e.clientY };
+      mouseState.current.movedDistance = 0;
+      setIsDraggingVisual(true);
+    }
+  };
+
+  const handleDoubleClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (scale > 1.05) {
+      resetZoom();
+    } else {
+      updateZoom(2.2);
+    }
+  };
+
+  // Listeners globais de mouse para continuidade de arraste mesmo saindo do container
+  useEffect(() => {
+    const handleGlobalMouseMove = (e) => {
+      if (mouseState.current.isDragging && scale > 1.05) {
+        e.preventDefault();
+        e.stopPropagation();
+        const deltaX = e.clientX - mouseState.current.lastPos.x;
+        const deltaY = e.clientY - mouseState.current.lastPos.y;
+        mouseState.current.movedDistance += Math.hypot(deltaX, deltaY);
+        mouseState.current.lastPos = { x: e.clientX, y: e.clientY };
+
+        setPosition((prev) => {
+          const next = { x: prev.x + deltaX, y: prev.y + deltaY };
+          return clampPosition(next, scale);
+        });
+      }
+    };
+
+    const handleGlobalMouseUp = (e) => {
+      if (mouseState.current.isDragging) {
+        if (mouseState.current.movedDistance > 4) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        mouseState.current.isDragging = false;
+        setIsDraggingVisual(false);
+      }
+    };
+
+    window.addEventListener('mousemove', handleGlobalMouseMove, { capture: true, passive: false });
+    window.addEventListener('mouseup', handleGlobalMouseUp, { capture: true, passive: false });
+
+    return () => {
+      window.removeEventListener('mousemove', handleGlobalMouseMove, { capture: true });
+      window.removeEventListener('mouseup', handleGlobalMouseUp, { capture: true });
+    };
+  }, [scale, clampPosition]);
+
+  // ==================== MANIPULADORES DE TOQUE (MOBILE) ====================
   const handleTouchStart = (e) => {
     if (touchState.current.pinchReleaseTimeout) {
       clearTimeout(touchState.current.pinchReleaseTimeout);
@@ -165,10 +239,18 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
     }
   };
 
+  const isPanningActive =
+    mouseState.current.isDragging ||
+    isDraggingVisual ||
+    touchState.current.isDragging ||
+    touchState.current.initialDistance > 0;
+
   return (
     <div
-      className="zoom-container"
+      className={`zoom-container ${isZoomActive ? 'zoom-active' : ''} ${isDraggingVisual ? 'zoom-dragging' : ''}`}
       ref={containerRef}
+      onMouseDownCapture={handleMouseDown}
+      onDoubleClick={handleDoubleClick}
     >
       <div
         className="zoom-content"
@@ -178,10 +260,9 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
         style={{
           transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${scale})`,
           transformOrigin: 'center center',
-          transition:
-            touchState.current.isDragging || touchState.current.initialDistance > 0
-              ? 'none'
-              : 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+          transition: isPanningActive
+            ? 'none'
+            : 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
         {children}
@@ -202,6 +283,7 @@ export const ZoomViewer = forwardRef(function ZoomViewer(
             resetZoom();
           }}
           onPointerDown={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
           role="button"
           tabIndex={0}
           aria-label="Redefinir zoom para tamanho original"

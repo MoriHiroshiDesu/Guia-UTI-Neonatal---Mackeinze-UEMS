@@ -10,6 +10,16 @@
   touch-action: none;
 }
 
+.zoom-container.zoom-active {
+  cursor: grab;
+}
+
+.zoom-container.zoom-active.zoom-dragging {
+  cursor: grabbing;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 .zoom-content {
   width: 100%;
   height: 100%;
