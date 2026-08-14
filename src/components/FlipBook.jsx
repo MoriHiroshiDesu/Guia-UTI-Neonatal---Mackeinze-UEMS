@@ -3,11 +3,12 @@ import { PageFlip } from 'page-flip';
 import '../styles/flipbook.css';
 
 export const FlipBook = forwardRef(function FlipBook(
-  { pages, onPageChange, onFlipStart, onInit },
+  { pages, initialPage = 1, onPageChange, onFlipStart, onInit, isZoomActive = false },
   ref
 ) {
   const containerRef = useRef(null);
   const pageFlipInstance = useRef(null);
+  const mountElRef = useRef(null);
 
   // Expõe métodos do PageFlip para o componente pai (App / Controls)
   useImperativeHandle(ref, () => ({
@@ -30,27 +31,68 @@ export const FlipBook = forwardRef(function FlipBook(
     getCurrentPageIndex: () => {
       return pageFlipInstance.current
         ? pageFlipInstance.current.getCurrentPageIndex() + 1
-        : 1;
+        : initialPage;
     },
   }));
+
+  // Desativa gestos de folheação durante o modo de zoom para permitir panning livre
+  useEffect(() => {
+    if (mountElRef.current) {
+      mountElRef.current.style.pointerEvents = isZoomActive ? 'none' : 'auto';
+    }
+  }, [isZoomActive]);
 
   useEffect(() => {
     if (!containerRef.current || !pages || pages.length === 0) return;
 
-    // Limpa qualquer montagem anterior no container
+    // Limpa montagem anterior
     containerRef.current.innerHTML = '';
 
     // Cria elemento DOM exclusivo para o PageFlip gerenciar
     const mountEl = document.createElement('div');
     mountEl.className = 'flipbook-mount';
+    mountElRef.current = mountEl;
     containerRef.current.appendChild(mountEl);
+
+    // Monta a estrutura HTML com <img> nativo para máxima nitidez (High-DPI / Retina)
+    pages.forEach((page, idx) => {
+      const pageDiv = document.createElement('div');
+      pageDiv.className = `flip-page ${page.isCover ? 'page-cover' : ''} ${page.isBackCover ? 'page-back' : ''}`;
+      pageDiv.setAttribute('data-density', page.isCover || page.isBackCover ? 'hard' : 'soft');
+
+      const pageInner = document.createElement('div');
+      pageInner.className = 'page-inner';
+
+      const img = document.createElement('img');
+      img.src = page.src;
+      img.alt = `Guia UTI Neonatal - ${page.title}`;
+      img.className = 'page-image';
+      // Prioriza carregamento das páginas próximas da página inicial
+      img.loading = Math.abs(idx + 1 - initialPage) <= 3 ? 'eager' : 'lazy';
+      img.draggable = false;
+
+      const shadowOverlay = document.createElement('div');
+      shadowOverlay.className = 'page-shadow-overlay';
+      shadowOverlay.setAttribute('aria-hidden', 'true');
+
+      pageInner.appendChild(img);
+      pageInner.appendChild(shadowOverlay);
+      pageDiv.appendChild(pageInner);
+      mountEl.appendChild(pageDiv);
+    });
 
     const containerWidth = containerRef.current.clientWidth || 360;
     const containerHeight = containerRef.current.clientHeight || 560;
 
-    // Proporção de página do guia
-    const baseWidth = Math.min(containerWidth, 420);
-    const baseHeight = Math.min(containerHeight, baseWidth * 1.45);
+    // Proporção exata das imagens do guia (874 x 1241 = ~0.70427)
+    const targetRatio = 874 / 1241;
+    let baseWidth = containerWidth;
+    let baseHeight = baseWidth / targetRatio;
+
+    if (baseHeight > containerHeight) {
+      baseHeight = containerHeight;
+      baseWidth = baseHeight * targetRatio;
+    }
 
     try {
       const pageFlip = new PageFlip(mountEl, {
@@ -58,23 +100,22 @@ export const FlipBook = forwardRef(function FlipBook(
         height: Math.round(baseHeight),
         size: 'stretch',
         minWidth: 260,
-        maxWidth: 550,
-        minHeight: 380,
-        maxHeight: 850,
-        maxShadowOpacity: 0.4,
+        maxWidth: 900,
+        minHeight: 360,
+        maxHeight: 1400,
+        maxShadowOpacity: 0.35,
         showCover: true,
         mobileScrollSupport: false,
         usePortrait: true,
-        startPage: 0,
+        startPage: Math.max(0, Math.min(pages.length - 1, initialPage - 1)),
         drawShadow: true,
-        flippingTime: 600,
+        flippingTime: 550,
         useMouseEvents: true,
-        swipeDistance: 25,
+        swipeDistance: 20,
         clickEventForward: true,
       });
 
-      const imageUrls = pages.map((p) => p.src);
-      pageFlip.loadFromImages(imageUrls);
+      pageFlip.loadFromHTML(mountEl.querySelectorAll('.flip-page'));
 
       pageFlip.on('flip', (e) => {
         const newPage = e.data + 1;
@@ -95,7 +136,7 @@ export const FlipBook = forwardRef(function FlipBook(
 
       pageFlipInstance.current = pageFlip;
     } catch (error) {
-      console.error('Erro ao inicializar PageFlip:', error);
+      console.error('Erro ao inicializar PageFlip com HTML:', error);
     }
 
     return () => {
@@ -110,6 +151,7 @@ export const FlipBook = forwardRef(function FlipBook(
       if (containerRef.current) {
         containerRef.current.innerHTML = '';
       }
+      mountElRef.current = null;
     };
   }, [pages]);
 

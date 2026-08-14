@@ -1,0 +1,92 @@
+/* Container com suporte a Pinch-to-Zoom e Pan */
+.zoom-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+}
+
+.zoom-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+/* Badge flutuante de redefinição de zoom */
+.zoom-floating-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 50;
+  cursor: pointer;
+  animation: fadeIn 0.2s ease-out;
+  user-select: none;
+}
+
+.zoom-floating-badge:active {
+  transform: translateX(-50%) scale(0.96);
+}
+
+/* Barra de Ações de Zoom no Header */
+.zoom-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 2px 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.zoom-tool-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+  transition: all 0.15s ease;
+}
+
+.zoom-tool-btn:hover:not(:disabled) {
+  background-color: var(--color-brand-light);
+  color: var(--color-brand-primary);
+}
+
+.zoom-tool-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.zoom-tool-btn:disabled {
+  opacity: 0.3;
+}
+
+.zoom-level-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  min-width: 28px;
+  text-align: center;
+}
