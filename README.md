@@ -33,38 +33,6 @@ Leitor digital interativo e acolhedor do **Guia de Orientação aos Acompanhante
 
 ---
 
-## 📂 Estrutura do Projeto
-
-```text
-.
-├── .agents/                    # Habilidades (skills) e ferramentas do ecossistema de IA
-├── .github/workflows/          # Pipeline de CI/CD para deploy no GitHub Pages
-├── .specify/                   # Constituição e especificações SDD
-├── docs/
-│   ├── paginas/                # Imagens das páginas do guia em formato WebP (otimizadas)
-│   └── pdf/                    # Arquivo PDF completo para download
-├── public/                     # Favicons e manifestos estáticos
-├── specs/                      # Especificações formais de features (Spec-Kit SDD)
-│   ├── 001-leitor-guia-pageflip/
-│   ├── 002-melhorias-leitura-zoom/
-│   ├── 003-touch-scrubber-desktop/
-│   ├── 004-polimento-impeccable-resolucao-pinch/
-│   ├── 005-visual-improvements/
-│   ├── 006-download-pdf-guia/
-│   ├── 007-abertura-livro-capa/
-│   └── 008-harmonia-visual-aurora-roxo/
-├── src/
-│   ├── components/             # Componentes React (FlipBook, Controls, Header, ZoomContainer, etc.)
-│   ├── services/               # Serviços de carregamento e auto-descoberta de páginas
-│   ├── styles/                 # Estilos modulares (aurora.css, controls.css, header.css, index.css, etc.)
-│   ├── App.jsx                 # Componente raiz da aplicação
-│   └── main.jsx                # Ponto de entrada do React
-├── index.html                  # HTML principal com metadados e pré-carregamento
-└── vite.config.js              # Configuração do Vite (base path e plugins)
-```
-
----
-
 ## 🚀 Como Executar Localmente
 
 ### Pré-requisitos
@@ -105,14 +73,6 @@ Leitor digital interativo e acolhedor do **Guia de Orientação aos Acompanhante
 ## 🚢 Deploy Contínuo
 
 O projeto é compilado para arquivos estáticos puros (HTML, CSS e JavaScript) e publicado automaticamente no **GitHub Pages** a cada push ou merge na branch `main` via GitHub Actions (`.github/workflows/deploy.yml`).
-
----
-
-## 📐 Metodologia de Desenvolvimento (SDD)
-
-Este repositório segue rigorosamente a metodologia **Spec-Driven Development (SDD)** através do **Spec-Kit**:
-* Toda alteração relevante possui especificação funcional (`spec.md`), planejamento técnico (`plan.md`) e lista de tarefas (`tasks.md`) sob a pasta `specs/`.
-* Princípios de acessibilidade, foco na acolhida dos pais e performance em redes hospitalares são governados pela constituição do projeto.
 
 ---
 
