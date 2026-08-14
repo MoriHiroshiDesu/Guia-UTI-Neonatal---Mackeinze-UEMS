@@ -18,16 +18,15 @@
   position: relative;
   box-shadow: var(--shadow-book);
   border-radius: var(--radius-md);
-  background-color: var(--color-surface);
+  background-color: #ffffff;
   overflow: hidden;
 }
 
 /* Páginas individuais no PageFlip */
 .flip-page {
-  background-color: var(--color-surface);
+  background-color: #ffffff;
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03);
 }
 
 .page-inner {
@@ -47,11 +46,15 @@
   display: block;
   pointer-events: none;
   background-color: #ffffff;
+  image-rendering: auto;
   image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
 }
 
-/* Sombra e textura sutil de lombada/papel */
+/* Sombra e textura sutil de lombada/papel com profundidade tátil */
 .page-shadow-overlay {
   position: absolute;
   top: 0;
@@ -59,7 +62,15 @@
   left: 0;
   right: 0;
   pointer-events: none;
-  box-shadow: inset 2px 0 6px rgba(0, 0, 0, 0.04);
+  background: linear-gradient(
+    to right,
+    rgba(19, 46, 43, 0.05) 0%,
+    rgba(19, 46, 43, 0.015) 3%,
+    transparent 10%,
+    transparent 90%,
+    rgba(19, 46, 43, 0.015) 97%,
+    rgba(19, 46, 43, 0.05) 100%
+  );
 }
 
 /* Capa e Contracapa */

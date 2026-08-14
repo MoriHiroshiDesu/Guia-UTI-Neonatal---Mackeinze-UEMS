@@ -43,11 +43,47 @@ export const FlipBook = forwardRef(function FlipBook(
     },
   }));
 
-  // Desativa gestos de folheação durante zoom ou pinça multitouch
+  // Interceptador em fase de captura para blindagem total de eventos de toque (Pinch vs Swipe)
   useEffect(() => {
-    if (mountElRef.current) {
-      mountElRef.current.style.pointerEvents = isZoomActive || isPinching ? 'none' : 'auto';
-    }
+    const container = containerRef.current;
+    if (!container) return;
+
+    let isShieldActive = false;
+    let cooldownTimer = null;
+
+    const handleCaptureTouch = (e) => {
+      if (e.touches.length >= 2) {
+        isShieldActive = true;
+        if (cooldownTimer) {
+          clearTimeout(cooldownTimer);
+          cooldownTimer = null;
+        }
+      }
+
+      if (isShieldActive || isZoomActive || isPinching) {
+        e.stopPropagation();
+
+        // Se todos os dedos foram soltos, mantém o bloqueio ativo por 350ms para engolir eventos residuais
+        if (e.touches.length === 0 && isShieldActive) {
+          cooldownTimer = setTimeout(() => {
+            isShieldActive = false;
+          }, 350);
+        }
+      }
+    };
+
+    container.addEventListener('touchstart', handleCaptureTouch, { capture: true, passive: false });
+    container.addEventListener('touchmove', handleCaptureTouch, { capture: true, passive: false });
+    container.addEventListener('touchend', handleCaptureTouch, { capture: true, passive: false });
+    container.addEventListener('touchcancel', handleCaptureTouch, { capture: true, passive: false });
+
+    return () => {
+      container.removeEventListener('touchstart', handleCaptureTouch, { capture: true });
+      container.removeEventListener('touchmove', handleCaptureTouch, { capture: true });
+      container.removeEventListener('touchend', handleCaptureTouch, { capture: true });
+      container.removeEventListener('touchcancel', handleCaptureTouch, { capture: true });
+      if (cooldownTimer) clearTimeout(cooldownTimer);
+    };
   }, [isZoomActive, isPinching]);
 
   useEffect(() => {
