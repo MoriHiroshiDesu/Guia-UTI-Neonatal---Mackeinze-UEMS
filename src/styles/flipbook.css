@@ -16,17 +16,18 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  box-shadow: var(--shadow-book);
-  border-radius: var(--radius-md);
-  background-color: #ffffff;
-  overflow: hidden;
+  background-color: transparent;
+  overflow: visible;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
-/* Páginas individuais no PageFlip */
+/* Páginas individuais no PageFlip com profundidade e sombra realista */
 .flip-page {
   background-color: #ffffff;
   overflow: hidden;
   position: relative;
+  box-shadow: var(--shadow-book);
 }
 
 .page-inner {
@@ -73,20 +74,20 @@
   );
 }
 
-/* Capa e Contracapa */
+/* Cantos arredondados sutis para a capa e contracapa do livro */
 .page-cover {
-  border-radius: var(--radius-md) 0 0 var(--radius-md);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
 
 .page-back {
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
 }
 
 /* Responsividade para telas menores */
 @media (max-width: 480px) {
-  .flipbook-mount,
   .page-cover,
-  .page-back {
+  .page-back,
+  .flip-page {
     border-radius: var(--radius-sm);
   }
 }
