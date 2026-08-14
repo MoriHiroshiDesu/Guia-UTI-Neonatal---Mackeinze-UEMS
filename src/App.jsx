@@ -161,6 +161,7 @@ export function App() {
             <FlipBook
               ref={flipBookRef}
               pages={pages}
+              currentPage={currentPage}
               initialPage={currentPage}
               onPageChange={handlePageChange}
               isZoomActive={isZoomActive}

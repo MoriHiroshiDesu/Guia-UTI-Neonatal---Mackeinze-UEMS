@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
+import React, { useEffect, useRef, useImperativeHandle, forwardRef, useCallback } from 'react';
 import { PageFlip } from 'page-flip';
 import '../styles/flipbook.css';
 
 export const FlipBook = forwardRef(function FlipBook(
   {
     pages,
+    currentPage = 1,
     initialPage = 1,
     onPageChange,
     onFlipStart,
@@ -18,20 +19,59 @@ export const FlipBook = forwardRef(function FlipBook(
   const pageFlipInstance = useRef(null);
   const mountElRef = useRef(null);
 
-  // Expõe métodos do PageFlip para o componente pai (App / Controls)
+  // Atualiza o alinhamento da capa/livro aberto para simulação física realista em Desktop
+  const updateMountPosition = useCallback((pageIndex) => {
+    if (!mountElRef.current || !containerRef.current) return;
+    const containerWidth = containerRef.current.clientWidth || 360;
+    const isDesktop = containerWidth >= 700;
+
+    if (!isDesktop) {
+      mountElRef.current.style.transform = 'none';
+      return;
+    }
+
+    const total = pages ? pages.length : 33;
+    if (pageIndex <= 1) {
+      // Capa fechada: centraliza no meio da tela (desloca 25% para a esquerda do canvas duplo)
+      mountElRef.current.style.transform = 'translateX(-25%)';
+    } else if (pageIndex >= total) {
+      // Contracapa fechada: centraliza no meio da tela (desloca 25% para a direita do canvas duplo)
+      mountElRef.current.style.transform = 'translateX(25%)';
+    } else {
+      // Livro aberto com duas páginas: centralizado normalmente
+      mountElRef.current.style.transform = 'translateX(0)';
+    }
+  }, [pages]);
+
+  // Expõe métodos do PageFlip para o componente pai (App / Controls) com antecipação imediata da transição
   useImperativeHandle(ref, () => ({
     flipNext: () => {
       if (pageFlipInstance.current) {
+        const cur = pageFlipInstance.current.getCurrentPageIndex() + 1;
+        // Inicia a transição do container IMEDIATAMENTE junto com o início do flip
+        if (cur <= 1) {
+          updateMountPosition(2);
+        } else if (cur >= (pages?.length || 33) - 2) {
+          updateMountPosition(pages?.length || 33);
+        }
         pageFlipInstance.current.flipNext();
       }
     },
     flipPrev: () => {
       if (pageFlipInstance.current) {
+        const cur = pageFlipInstance.current.getCurrentPageIndex() + 1;
+        // Inicia a transição de fechamento IMEDIATAMENTE junto com o início do flip
+        if (cur <= 3) {
+          updateMountPosition(1);
+        } else if (cur >= (pages?.length || 33)) {
+          updateMountPosition((pages?.length || 33) - 1);
+        }
         pageFlipInstance.current.flipPrev();
       }
     },
     goToPage: (pageIndex) => {
       if (pageFlipInstance.current) {
+        updateMountPosition(pageIndex);
         // page-flip usa índice 0-based
         pageFlipInstance.current.flip(pageIndex - 1);
       }
@@ -39,9 +79,22 @@ export const FlipBook = forwardRef(function FlipBook(
     getCurrentPageIndex: () => {
       return pageFlipInstance.current
         ? pageFlipInstance.current.getCurrentPageIndex() + 1
-        : initialPage;
+        : currentPage;
     },
-  }));
+  }), [pages, currentPage, updateMountPosition]);
+
+  // Sincroniza o alinhamento quando a página mudar ou a janela for redimensionada
+  useEffect(() => {
+    updateMountPosition(currentPage);
+  }, [currentPage, updateMountPosition]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      updateMountPosition(currentPage);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [currentPage, updateMountPosition]);
 
   // Interceptador em fase de captura para blindagem total de eventos de toque (Pinch vs Swipe)
   useEffect(() => {
@@ -186,18 +239,27 @@ export const FlipBook = forwardRef(function FlipBook(
 
       pageFlip.on('flip', (e) => {
         const newPage = e.data + 1;
+        updateMountPosition(newPage);
         if (onPageChange) {
           onPageChange(newPage);
         }
       });
 
       pageFlip.on('changeState', (e) => {
-        if (e.data === 'flipping' && onFlipStart) {
-          onFlipStart();
+        if (e.data === 'flipping' || e.data === 'user_fold') {
+          const cur = pageFlip.getCurrentPageIndex() + 1;
+          if (cur <= 1) {
+            // Antecipa abertura imediatamente durante o início da dobra/virada
+            updateMountPosition(2);
+          }
+          if (onFlipStart) {
+            onFlipStart();
+          }
         }
       });
 
       pageFlip.on('init', () => {
+        updateMountPosition(initialPage);
         if (onInit) onInit();
       });
 
@@ -220,7 +282,7 @@ export const FlipBook = forwardRef(function FlipBook(
       }
       mountElRef.current = null;
     };
-  }, [pages]);
+  }, [pages, initialPage, onPageChange, onFlipStart, onInit, updateMountPosition]);
 
   return (
     <div className="flipbook-wrapper" ref={containerRef} />
