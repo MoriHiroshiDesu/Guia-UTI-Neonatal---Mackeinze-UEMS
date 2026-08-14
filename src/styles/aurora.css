@@ -1,0 +1,139 @@
+.aurora-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  z-index: -1;
+  background: radial-gradient(circle at 50% 30%, #eef5f3 0%, #dde8e4 60%, #cfded9 100%);
+  pointer-events: none;
+}
+
+.aurora-layer {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(55px) saturate(130%);
+  opacity: 0.85;
+  will-change: transform, opacity;
+}
+
+/* Layer 1: Teal Profundo (Hospitalar & Conforto) - Canto Superior Esquerdo */
+.aurora-1 {
+  top: -15%;
+  left: -10%;
+  width: 65vw;
+  height: 60vh;
+  min-width: 320px;
+  min-height: 320px;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.85) 0%, rgba(15, 118, 110, 0.5) 45%, transparent 70%);
+  animation: aurora-move-1 22s infinite ease-in-out alternate;
+}
+
+/* Layer 2: Menta / Esmeralda Luminosa - Topo / Direita */
+.aurora-2 {
+  top: 10%;
+  right: -15%;
+  width: 70vw;
+  height: 65vh;
+  min-width: 340px;
+  min-height: 340px;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.75) 0%, rgba(16, 185, 129, 0.45) 50%, transparent 72%);
+  animation: aurora-move-2 26s infinite ease-in-out alternate;
+  animation-delay: -4s;
+}
+
+/* Layer 3: Âmbar / Pêssego Acolhedor (Toque Materno/Humano) - Fundo Direita */
+.aurora-3 {
+  bottom: -15%;
+  right: 5%;
+  width: 65vw;
+  height: 55vh;
+  min-width: 300px;
+  min-height: 300px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.55) 0%, rgba(251, 146, 60, 0.35) 45%, transparent 68%);
+  animation: aurora-move-3 24s infinite ease-in-out alternate;
+  animation-delay: -9s;
+}
+
+/* Layer 4: Azul Celeste / Ciano Suave (Profundidade e Ar) - Fundo Esquerda */
+.aurora-4 {
+  bottom: -10%;
+  left: -10%;
+  width: 60vw;
+  height: 55vh;
+  min-width: 280px;
+  min-height: 280px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.6) 0%, rgba(14, 165, 233, 0.3) 50%, transparent 70%);
+  animation: aurora-move-4 28s infinite ease-in-out alternate;
+  animation-delay: -14s;
+}
+
+/* Textura suave de grão acetinado (Impeccable visual polish) */
+.aurora-noise {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Animações fluidas e contínuas para cada orbe de luz */
+@keyframes aurora-move-1 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(12%, 18%) scale(1.18) rotate(15deg);
+  }
+  100% {
+    transform: translate(-6%, 8%) scale(0.92) rotate(-8deg);
+  }
+}
+
+@keyframes aurora-move-2 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(-14%, 12%) scale(1.14) rotate(-12deg);
+  }
+  100% {
+    transform: translate(8%, -10%) scale(0.95) rotate(10deg);
+  }
+}
+
+@keyframes aurora-move-3 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(-12%, -15%) scale(1.15) rotate(10deg);
+  }
+  100% {
+    transform: translate(10%, 6%) scale(0.9) rotate(-14deg);
+  }
+}
+
+@keyframes aurora-move-4 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(15%, -12%) scale(1.2) rotate(-10deg);
+  }
+  100% {
+    transform: translate(-8%, 10%) scale(0.9) rotate(8deg);
+  }
+}
+
+/* Adaptação inteligente para mobile: menor raio de blur e otimização de GPU */
+@media (max-width: 768px) {
+  .aurora-layer {
+    filter: blur(45px) saturate(125%);
+    opacity: 0.88;
+  }
+}

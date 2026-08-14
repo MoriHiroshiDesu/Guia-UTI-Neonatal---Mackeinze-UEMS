@@ -68,13 +68,20 @@ export function Controls({
         </div>
 
         {/* Scrubber / Slider de Navegação Rápida */}
-        <div className="scrubber-wrapper">
+        <div className={`scrubber-wrapper ${isScrubbing ? 'scrubbing-active' : ''}`}>
           <div className="scrubber-track" aria-hidden="true">
             <div
               className="scrubber-fill"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
+
+          {/* Custom Thumb visual fora do overflow:hidden da barra */}
+          <div
+            className="scrubber-custom-thumb"
+            style={{ left: `${progressPercent}%` }}
+            aria-hidden="true"
+          />
 
           <input
             type="range"

@@ -4,6 +4,7 @@ import { FlipBook } from './components/FlipBook';
 import { ZoomViewer } from './components/ZoomViewer';
 import { Controls } from './components/Controls';
 import { LoadingIndicator } from './components/LoadingIndicator';
+import { AuroraBackground } from './components/AuroraBackground';
 import { pageService } from './services/pageService';
 import { storageService } from './services/storageService';
 
@@ -138,6 +139,7 @@ export function App() {
 
   return (
     <div className="app-container">
+      <AuroraBackground />
       {/* Cabeçalho com Brand e Controles de Zoom */}
       <Header
         onZoomIn={handleZoomIn}

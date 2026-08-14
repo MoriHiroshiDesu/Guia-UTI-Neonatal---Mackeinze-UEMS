@@ -109,6 +109,34 @@
   border-radius: var(--radius-full);
 }
 
+/* Custom Thumb para animar suavemente a posição sem ser espremido */
+.scrubber-custom-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2.5px solid var(--color-brand-primary);
+  box-shadow: 0 2px 6px rgba(13, 79, 74, 0.25);
+  pointer-events: none; /* Deixa o input range capturar os toques */
+  z-index: 3;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.scrubber-wrapper.scrubbing-active .scrubber-custom-thumb {
+  transform: translate(-50%, -50%) scale(1.25);
+  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.4);
+}
+
+.scrubber-wrapper:not(.scrubbing-active) .scrubber-fill,
+.scrubber-wrapper:not(.scrubbing-active) .scrubber-custom-thumb {
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .scrubber-input {
   position: relative;
   width: 100%;
@@ -121,41 +149,27 @@
   margin: 0;
 }
 
-/* Customização do Thumb (Ponto de arrasto) */
+/* Oculta o thumb nativo pois usaremos o custom thumb */
 .scrubber-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 18px;
   height: 18px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 2.5px solid var(--color-brand-primary);
-  box-shadow: 0 2px 6px rgba(13, 79, 74, 0.25);
-  cursor: grab;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  opacity: 0;
 }
 
 .scrubber-input:active::-webkit-slider-thumb {
   cursor: grabbing;
-  transform: scale(1.25);
-  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.4);
 }
 
 .scrubber-input::-moz-range-thumb {
   width: 18px;
   height: 18px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 2.5px solid var(--color-brand-primary);
-  box-shadow: 0 2px 6px rgba(13, 79, 74, 0.25);
-  cursor: grab;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  opacity: 0;
 }
 
 .scrubber-input:active::-moz-range-thumb {
   cursor: grabbing;
-  transform: scale(1.25);
-  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.4);
 }
 
 .scrubber-input:focus-visible {
