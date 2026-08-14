@@ -7,7 +7,6 @@ export const FlipBook = forwardRef(function FlipBook(
   ref
 ) {
   const containerRef = useRef(null);
-  const bookRef = useRef(null);
   const pageFlipInstance = useRef(null);
 
   // Expõe métodos do PageFlip para o componente pai (App / Controls)
@@ -36,29 +35,27 @@ export const FlipBook = forwardRef(function FlipBook(
   }));
 
   useEffect(() => {
-    if (!bookRef.current || !pages || pages.length === 0) return;
+    if (!containerRef.current || !pages || pages.length === 0) return;
 
-    // Destrói instância anterior se houver
-    if (pageFlipInstance.current) {
-      try {
-        pageFlipInstance.current.destroy();
-      } catch (err) {
-        console.warn('Erro ao limpar instância anterior do PageFlip:', err);
-      }
-    }
+    // Limpa qualquer montagem anterior no container
+    containerRef.current.innerHTML = '';
 
-    const container = containerRef.current;
-    const containerWidth = container ? container.clientWidth : 360;
-    const containerHeight = container ? container.clientHeight : 560;
+    // Cria elemento DOM exclusivo para o PageFlip gerenciar
+    const mountEl = document.createElement('div');
+    mountEl.className = 'flipbook-mount';
+    containerRef.current.appendChild(mountEl);
 
-    // Proporção ideal de leitura mobile (aproximadamente 1 : 1.5)
+    const containerWidth = containerRef.current.clientWidth || 360;
+    const containerHeight = containerRef.current.clientHeight || 560;
+
+    // Proporção de página do guia
     const baseWidth = Math.min(containerWidth, 420);
-    const baseHeight = Math.min(containerHeight, baseWidth * 1.55);
+    const baseHeight = Math.min(containerHeight, baseWidth * 1.45);
 
     try {
-      const pageFlip = new PageFlip(bookRef.current, {
-        width: baseWidth,
-        height: baseHeight,
+      const pageFlip = new PageFlip(mountEl, {
+        width: Math.round(baseWidth),
+        height: Math.round(baseHeight),
         size: 'stretch',
         minWidth: 260,
         maxWidth: 550,
@@ -70,16 +67,16 @@ export const FlipBook = forwardRef(function FlipBook(
         usePortrait: true,
         startPage: 0,
         drawShadow: true,
-        flippingTime: 650,
+        flippingTime: 600,
         useMouseEvents: true,
         swipeDistance: 25,
         clickEventForward: true,
       });
 
-      pageFlip.loadFromHTML(bookRef.current.querySelectorAll('.flip-page'));
+      const imageUrls = pages.map((p) => p.src);
+      pageFlip.loadFromImages(imageUrls);
 
       pageFlip.on('flip', (e) => {
-        // e.data contém o novo índice da página (0-based)
         const newPage = e.data + 1;
         if (onPageChange) {
           onPageChange(newPage);
@@ -105,36 +102,20 @@ export const FlipBook = forwardRef(function FlipBook(
       if (pageFlipInstance.current) {
         try {
           pageFlipInstance.current.destroy();
-          pageFlipInstance.current = null;
         } catch (e) {
-          // cleanup silencioso
+          // cleanup seguro
         }
+        pageFlipInstance.current = null;
+      }
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '';
       }
     };
   }, [pages]);
 
   return (
-    <div className="flipbook-wrapper" ref={containerRef}>
-      <div className="flipbook-container" ref={bookRef}>
-        {pages.map((page) => (
-          <div
-            key={page.filename}
-            className={`flip-page ${page.isCover ? 'page-cover' : ''} ${page.isBackCover ? 'page-back' : ''}`}
-            data-density={page.isCover || page.isBackCover ? 'hard' : 'soft'}
-          >
-            <div className="page-inner">
-              <img
-                src={page.src}
-                alt={`Guia UTI Neonatal - ${page.title}`}
-                className="page-image"
-                loading={page.index <= 3 ? 'eager' : 'lazy'}
-                draggable="false"
-              />
-              <div className="page-shadow-overlay" aria-hidden="true" />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <div className="flipbook-wrapper" ref={containerRef} />
   );
 });
+
+export default FlipBook;

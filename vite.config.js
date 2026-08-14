@@ -7,6 +7,7 @@ export default defineConfig({
   base: './', // Necessário para funcionamento correto em subdiretórios no GitHub Pages
   server: {
     port: 5173,
+    host: true, // Expõe para a rede local (acesso via celular)
     open: false,
   },
   build: {

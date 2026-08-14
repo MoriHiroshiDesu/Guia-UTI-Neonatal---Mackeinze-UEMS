@@ -3,7 +3,7 @@
  */
 
 // Importação dinâmica via Vite de todas as imagens presentes em docs/paginas/
-const pageModules = import.meta.glob('../../docs/paginas/*.{webp,png,jpg,jpeg}', {
+const pageModules = import.meta.glob('/docs/paginas/*.{webp,png,jpg,jpeg}', {
   eager: true,
   import: 'default',
 });
