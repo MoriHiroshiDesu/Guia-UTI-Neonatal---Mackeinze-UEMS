@@ -1,29 +1,29 @@
 :root {
-  /* Paleta serena, acolhedora e calorosa inspirada no cuidado neonatal (Impeccable Design) */
-  --color-bg: #e6edea;
-  --color-bg-gradient: radial-gradient(ellipse at 50% 25%, #f6faf9 0%, #e2edea 55%, #d5e4e0 100%);
+  /* Paleta serena, acolhedora e calorosa inspirada na identidade visual roxo/rosa do guia (Impeccable Design) */
+  --color-bg: #eae5f2;
+  --color-bg-gradient: radial-gradient(ellipse at 50% 25%, #faf7fc 0%, #ece5f5 55%, #dfd5ed 100%);
   
   --color-surface: rgba(255, 255, 255, 0.94);
   --color-surface-hover: #ffffff;
   --color-surface-glass: rgba(255, 255, 255, 0.88);
   
-  --color-text-main: #132e2b;           /* Verde-azulado escuro e acolhedor */
-  --color-text-muted: #53716d;          /* Tom sereno de suporte */
+  --color-text-main: #21182c;           /* Ameixa escuro e acolhedor de altíssima legibilidade */
+  --color-text-muted: #685f73;          /* Tom sereno lilás-acinzentado */
   
-  --color-brand-primary: #0f766e;       /* Teal hospitalar nobre e seguro */
-  --color-brand-primary-hover: #0d5f59;
-  --color-brand-light: #d1fae5;         /* Menta suave */
-  --color-brand-accent: #d97706;        /* Âmbar caloroso */
+  --color-brand-primary: #6b28a8;       /* Roxo nobre idêntico aos títulos das páginas */
+  --color-brand-primary-hover: #561c8a;
+  --color-brand-light: #ede8fa;         /* Lavanda suave */
+  --color-brand-accent: #d946ef;        /* Rosa/Magenta caloroso das ilustrações */
   
-  --color-border: rgba(15, 118, 110, 0.15);
-  --color-border-subtle: rgba(15, 118, 110, 0.08);
+  --color-border: rgba(107, 40, 168, 0.16);
+  --color-border-subtle: rgba(107, 40, 168, 0.08);
   
-  --shadow-sm: 0 2px 4px rgba(19, 46, 43, 0.04);
-  --shadow-md: 0 6px 16px -2px rgba(19, 46, 43, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 16px 32px -4px rgba(19, 46, 43, 0.12), 0 6px 12px -2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 4px rgba(33, 24, 44, 0.04);
+  --shadow-md: 0 6px 16px -2px rgba(33, 24, 44, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 16px 32px -4px rgba(33, 24, 44, 0.12), 0 6px 12px -2px rgba(0, 0, 0, 0.04);
   
-  /* Sombra de livro realista com profundidade tátil */
-  --shadow-book: 0 24px 52px -12px rgba(13, 79, 74, 0.25), 0 8px 24px -6px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  /* Sombra de livro realista com profundidade tátil e leve oclusão ambiente púrpura */
+  --shadow-book: 0 24px 52px -12px rgba(60, 20, 95, 0.22), 0 8px 24px -6px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
 
   --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;

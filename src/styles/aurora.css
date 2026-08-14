@@ -6,19 +6,19 @@
   height: 100dvh;
   overflow: hidden;
   z-index: -1;
-  background: radial-gradient(circle at 50% 30%, #eef5f3 0%, #dde8e4 60%, #cfded9 100%);
+  background: radial-gradient(circle at 50% 30%, #f4effa 0%, #e7dced 55%, #dac9e5 100%);
   pointer-events: none;
 }
 
 .aurora-layer {
   position: absolute;
   border-radius: 50%;
-  filter: blur(55px) saturate(130%);
-  opacity: 0.85;
+  filter: blur(55px) saturate(145%);
+  opacity: 0.92;
   will-change: transform, opacity;
 }
 
-/* Layer 1: Teal Profundo (Hospitalar & Conforto) - Canto Superior Esquerdo */
+/* Layer 1: Roxo Real / Violeta Profundo - Canto Superior Esquerdo */
 .aurora-1 {
   top: -15%;
   left: -10%;
@@ -26,11 +26,11 @@
   height: 60vh;
   min-width: 320px;
   min-height: 320px;
-  background: radial-gradient(circle, rgba(13, 148, 136, 0.85) 0%, rgba(15, 118, 110, 0.5) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.85) 0%, rgba(107, 33, 168, 0.55) 45%, transparent 70%);
   animation: aurora-move-1 22s infinite ease-in-out alternate;
 }
 
-/* Layer 2: Menta / Esmeralda Luminosa - Topo / Direita */
+/* Layer 2: Rosa Vibrante / Magenta Floral - Topo / Direita */
 .aurora-2 {
   top: 10%;
   right: -15%;
@@ -38,12 +38,12 @@
   height: 65vh;
   min-width: 340px;
   min-height: 340px;
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.75) 0%, rgba(16, 185, 129, 0.45) 50%, transparent 72%);
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.8) 0%, rgba(217, 70, 239, 0.5) 48%, transparent 72%);
   animation: aurora-move-2 26s infinite ease-in-out alternate;
   animation-delay: -4s;
 }
 
-/* Layer 3: Âmbar / Pêssego Acolhedor (Toque Materno/Humano) - Fundo Direita */
+/* Layer 3: Pêssego Rosado / Lilás Acolhedor (Toque Materno/Humano) - Fundo Direita */
 .aurora-3 {
   bottom: -15%;
   right: 5%;
@@ -51,12 +51,12 @@
   height: 55vh;
   min-width: 300px;
   min-height: 300px;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.55) 0%, rgba(251, 146, 60, 0.35) 45%, transparent 68%);
+  background: radial-gradient(circle, rgba(192, 132, 252, 0.78) 0%, rgba(244, 114, 182, 0.48) 45%, transparent 68%);
   animation: aurora-move-3 24s infinite ease-in-out alternate;
   animation-delay: -9s;
 }
 
-/* Layer 4: Azul Celeste / Ciano Suave (Profundidade e Ar) - Fundo Esquerda */
+/* Layer 4: Lavanda Iluminada / Violeta Suave (Profundidade e Ar) - Fundo Esquerda */
 .aurora-4 {
   bottom: -10%;
   left: -10%;
@@ -64,7 +64,7 @@
   height: 55vh;
   min-width: 280px;
   min-height: 280px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.6) 0%, rgba(14, 165, 233, 0.3) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.8) 0%, rgba(139, 92, 246, 0.48) 50%, transparent 70%);
   animation: aurora-move-4 28s infinite ease-in-out alternate;
   animation-delay: -14s;
 }
@@ -133,7 +133,7 @@
 /* Adaptação inteligente para mobile: menor raio de blur e otimização de GPU */
 @media (max-width: 768px) {
   .aurora-layer {
-    filter: blur(45px) saturate(125%);
-    opacity: 0.88;
+    filter: blur(45px) saturate(135%);
+    opacity: 0.92;
   }
 }
