@@ -65,12 +65,12 @@
   pointer-events: none;
   background: linear-gradient(
     to right,
-    rgba(19, 46, 43, 0.05) 0%,
-    rgba(19, 46, 43, 0.015) 3%,
+    rgba(33, 24, 44, 0.04) 0%,
+    rgba(33, 24, 44, 0.012) 3%,
     transparent 10%,
     transparent 90%,
-    rgba(19, 46, 43, 0.015) 97%,
-    rgba(19, 46, 43, 0.05) 100%
+    rgba(33, 24, 44, 0.012) 97%,
+    rgba(33, 24, 44, 0.04) 100%
   );
 }
 

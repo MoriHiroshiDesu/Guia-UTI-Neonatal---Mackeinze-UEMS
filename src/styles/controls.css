@@ -30,7 +30,7 @@
 }
 
 .control-btn:hover:not(:disabled) {
-  background-color: #a7f3d0;
+  background-color: #ddd6fe;
   transform: scale(1.06);
 }
 
@@ -97,7 +97,7 @@
   position: absolute;
   width: 100%;
   height: 6px;
-  background-color: rgba(15, 118, 110, 0.12);
+  background-color: rgba(107, 40, 168, 0.14);
   border-radius: var(--radius-full);
   overflow: hidden;
   pointer-events: none;
@@ -105,7 +105,7 @@
 
 .scrubber-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-brand-primary), #14b8a6);
+  background: linear-gradient(90deg, var(--color-brand-primary), #a855f7);
   border-radius: var(--radius-full);
 }
 
@@ -121,7 +121,7 @@
   border-radius: 50%;
   background: #ffffff;
   border: 2.5px solid var(--color-brand-primary);
-  box-shadow: 0 2px 6px rgba(13, 79, 74, 0.25);
+  box-shadow: 0 2px 6px rgba(107, 40, 168, 0.28);
   pointer-events: none; /* Deixa o input range capturar os toques */
   z-index: 3;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -129,7 +129,7 @@
 
 .scrubber-wrapper.scrubbing-active .scrubber-custom-thumb {
   transform: translate(-50%, -50%) scale(1.25);
-  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.4);
+  box-shadow: 0 4px 10px rgba(107, 40, 168, 0.45);
 }
 
 .scrubber-wrapper:not(.scrubbing-active) .scrubber-fill,
