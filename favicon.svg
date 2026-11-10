@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64">
+  <!-- Brand color: #0f766e -->
+  <defs>
+    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e" />
+      <stop offset="100%" stop-color="#14b8a6" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="24" height="24" rx="6" fill="#e6edea" />
+  
+  <path d="M6.5 4C5.119 4 4 5.119 4 6.5V18.5C4 19.881 5.119 21 6.5 21H18C18.552 21 19 20.552 19 20V6.5C19 5.119 17.881 4 16.5 4H6.5ZM6.5 6H16.5C16.776 6 17 6.224 17 6.5V18.5C17 18.776 16.776 19 16.5 19H6.5C6.224 19 6 18.776 6 18.5V6.5C6 6.224 6.224 6 6.5 6Z" fill="url(#brandGradient)" />
+  <path d="M11 6V19H12.5V6H11Z" fill="url(#brandGradient)" />
+  
+  <!-- Small heart inside -->
+  <path d="M14.5 9.5C14.5 8.671 13.829 8 13 8C12.585 8 12.213 8.169 11.944 8.441L11.75 8.64L11.556 8.441C11.287 8.169 10.915 8 10.5 8C9.671 8 9 8.671 9 9.5C9 10.165 9.421 10.978 10.222 11.836C10.702 12.35 11.261 12.833 11.75 13.25C12.239 12.833 12.798 12.35 13.278 11.836C14.079 10.978 14.5 10.165 14.5 9.5Z" fill="#d97706" />
+</svg>
